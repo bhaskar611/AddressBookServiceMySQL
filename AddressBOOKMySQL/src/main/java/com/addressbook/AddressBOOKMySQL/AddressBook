@@ -1,0 +1,163 @@
+-----------------------------********************AddressBook_Service_MySQL************************-----------------------------_____________________________________________________________________________________________________________________________________________________________________________________________
+UC1: Ability to create a Address Book Service DB
+
+mysql> create database Address_Book_Service;
+Query OK, 1 row affected (0.27 sec)
+
+mysql> show databases;
++----------------------+
+| Database             |
++----------------------+
+| address_book_service |
+| employee             |
+| employee_payroll     |
+| information_schema   |
+| mysql                |
+| payroll_service      |
+| performance_schema   |
+| sakila               |
+| sys                  |
+| world                |
++----------------------+
+10 rows in set (0.00 sec)
+
+mysql> USE Address_Book_Service;
+Database changed
+
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC2:Ability to create a Address Book Table with first and last names, address, city, state, zip, phone number and email as its attributes
+create table addressBook					
+
+
+mysql> create table addressBook
+    -> (
+    -> firstName VARCHAR(32) NOT NULL,
+    -> lastName VARCHAR(32) NOT NUll,
+    -> address VARCHAR(150) NOT NULL,
+    -> city VARCHAR(32) NOT NULL,
+    -> state VARCHAR(32) NOT NULL,
+    -> zip INT unsigned NOT NULL,
+    -> phoneNumber INT unsigned NOT NULL,
+    -> email VARCHAR(150) NOT NULL,
+    ->  PRIMARY KEY (firstName)
+    -> );
+Query OK, 0 rows affected (1.80 sec)
+
+mysql> Describe addressBook;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| firstName   | varchar(32)  | NO   | PRI | NULL    |       |
+| lastName    | varchar(32)  | NO   |     | NULL    |       |
+| address     | varchar(150) | NO   |     | NULL    |       |
+| city        | varchar(32)  | NO   |     | NULL    |       |
+| state       | varchar(32)  | NO   |     | NULL    |       |
+| zip         | int unsigned | NO   |     | NULL    |       |
+| phoneNumber | int unsigned | NO   |     | NULL    |       |
+| email       | varchar(150) | NO   |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+8 rows in set (0.03 sec)
+
+____________________________________________________________________________________________________________________________________________________________________________________________
+UC3: Ability to insert new Contacts to Address Book
+
+mysql> insert into addressBook (firstName, lastName, address, city, state, zip, phoneNumber, email) VALUES
+    -> ('baskar', 'navuluri', 'nippo', 'nellore', 'ap', 524004, 567890, 'baskar@gmail.com'),
+    -> ('siddiq', 'khan', 'park', 'mysore', 'karnataka', 570016, 831050, 'siddiq@gmail.com'),
+    -> ('ramesh', 'Shinde', 'thane', 'Mumbai', 'Maharastra', 543210, 123456, 'ramesh@gmail.com');
+Query OK, 3 rows affected (0.14 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
+ERROR 1146 (42S02): Table 'address_book_service.employee' doesn't exist
+mysql> select * from addressBook;
++-----------+----------+---------+---------+------------+--------+-------------+------------------+
+| firstName | lastName | address | city    | state      | zip    | phoneNumber | email            |
++-----------+----------+---------+---------+------------+--------+-------------+------------------+
+| baskar    | navuluri | nippo   | nellore | ap         | 524004 |      567890 | baskar@gmail.com |
+| ramesh    | Shinde   | thane   | Mumbai  | Maharastra | 543210 |      123456 | ramesh@gmail.com |
+| siddiq    | khan     | park    | mysore  | karnataka  | 570016 |      831050 | siddiq@gmail.com |
++-----------+----------+---------+---------+------------+--------+-------------+------------------+
+3 rows in set (0.11 sec)
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC4: Ability to edit existing contact person using their name
+
+mysql> update addressBook set city = 'Hyderabad' where firstName = 'siddiq';
+Query OK, 1 row affected (0.18 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from addressBook;
++-----------+----------+---------+-----------+------------+--------+-------------+------------------+
+| firstName | lastName | address | city      | state      | zip    | phoneNumber | email            |
++-----------+----------+---------+-----------+------------+--------+-------------+------------------+
+| baskar    | navuluri | nippo   | nellore   | ap         | 524004 |      567890 | baskar@gmail.com |
+| ramesh    | Shinde   | thane   | Mumbai    | Maharastra | 543210 |      123456 | ramesh@gmail.com |
+| siddiq    | khan     | park    | Hyderabad | karnataka  | 570016 |      831050 | siddiq@gmail.com |
++-----------+----------+---------+-----------+------------+--------+-------------+------------------+
+3 rows in set (0.00 sec)
+____________________________________________________________________________________________________________________________________________________________________________________________
+UC5:Ability to delete a person using person's name
+
+
+mysql> delete from addressBook  where firstName = 'ramesh';
+Query OK, 1 row affected (0.12 sec)
+
+mysql> select * from addressBook;
++-----------+----------+---------+-----------+-----------+--------+-------------+------------------+
+| firstName | lastName | address | city      | state     | zip    | phoneNumber | email            |
++-----------+----------+---------+-----------+-----------+--------+-------------+------------------+
+| baskar    | navuluri | nippo   | nellore   | ap        | 524004 |      567890 | baskar@gmail.com |
+| siddiq    | khan     | park    | Hyderabad | karnataka | 570016 |      831050 | siddiq@gmail.com |
++-----------+----------+---------+-----------+-----------+--------+-------------+------------------+
+2 rows in set (0.00 sec)
+____________________________________________________________________________________________________________________________________________________________________________________________
+UC6: Ability to Retrieve Person belonging to a City or State from the Address Book
+
+
+mysql> insert into addressBook (firstName, lastName, address, city, state, zip, phoneNumber, email) VALUES
+    ->  ('ramesh', 'Shinde', 'thane', 'Mumbai', 'Maharastra', 543210, 123456, 'ramesh@gmail.com');
+Query OK, 1 row affected (0.19 sec)
+
+mysql> select * from addressBook;
++-----------+----------+---------+-----------+------------+--------+-------------+------------------+
+| firstName | lastName | address | city      | state      | zip    | phoneNumber | email            |
++-----------+----------+---------+-----------+------------+--------+-------------+------------------+
+| baskar    | navuluri | nippo   | nellore   | ap         | 524004 |      567890 | baskar@gmail.com |
+| ramesh    | Shinde   | thane   | Mumbai    | Maharastra | 543210 |      123456 | ramesh@gmail.com |
+| siddiq    | khan     | park    | Hyderabad | karnataka  | 570016 |      831050 | siddiq@gmail.com |
++-----------+----------+---------+-----------+------------+--------+-------------+------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from addressBook where city = 'nellore';
++-----------+----------+---------+---------+-------+--------+-------------+------------------+
+| firstName | lastName | address | city    | state | zip    | phoneNumber | email            |
++-----------+----------+---------+---------+-------+--------+-------------+------------------+
+| baskar    | navuluri | nippo   | nellore | ap    | 524004 |      567890 | baskar@gmail.com |
++-----------+----------+---------+---------+-------+--------+-------------+------------------+
+1 row in set (0.00 sec)
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC7:Ability to understand the count of address book by City and State
+
+
+mysql> select city, Count(firstName) from addressBook group by city;
++-----------+------------------+
+| city      | Count(firstName) |
++-----------+------------------+
+| nellore   |                1 |
+| Mumbai    |                1 |
+| Hyderabad |                1 |
++-----------+------------------+
+3 rows in set (0.00 sec)
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC8:Ability to retrieve entries sorted alphabetically by Person’s name for a given city
+
+
+mysql> select * from addressBook where city = 'Mumbai' ORDER BY firstName ASC;
++-----------+----------+---------+--------+------------+--------+-------------+------------------+
+| firstName | lastName | address | city   | state      | zip    | phoneNumber | email            |
++-----------+----------+---------+--------+------------+--------+-------------+------------------+
+| ramesh    | Shinde   | thane   | Mumbai | Maharastra | 543210 |      123456 | ramesh@gmail.com |
++-----------+----------+---------+--------+------------+--------+-------------+------------------+
+1 row in set (0.00 sec)
+
+mysql>
